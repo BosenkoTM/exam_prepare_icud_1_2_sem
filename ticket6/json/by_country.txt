@@ -1,0 +1,46 @@
+curl -X GET "http://localhost:9200/products/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggregations": {
+    "by_country": {
+      "terms": {
+        "field": "manufacturer.country.name",
+        "size": 20
+      },
+      "aggregations": {
+        "total_products": {
+          "value_count": {
+            "field": "name"
+          }
+        },
+        "attribVal": {
+          "terms": {
+            "field": "name"
+          }
+        },
+        "avg_price": {
+          "avg": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}
+'
+
+/products/_count
+
+
+curl -X GET "http://localhost:9200/products/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggregations": {
+      "attribVal": {
+      "terms": {
+        "field": "name"
+      }
+    }
+  }
+}
+'

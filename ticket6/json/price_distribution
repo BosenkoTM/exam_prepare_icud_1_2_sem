@@ -1,0 +1,55 @@
+curl -X GET "http://localhost:9200/products/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "terms": {
+            "manufacturer.country.name": [
+              "Россия",
+              "Беларусь"
+            ]
+          }
+        },
+        {
+          "range": {
+            "manufacturer.founded": {
+              "gte": "2000-01-01",
+              "lt": "now/d"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "price_distribution": {
+      "range": {
+        "field": "price",
+        "ranges": [
+          {
+            "from": 0,
+            "to": 5000
+          },
+          {
+            "from": 5000,
+            "to": 10000
+          },
+          {
+            "from": 10000,
+            "to": 15000
+          },
+          {
+            "from": 15000,
+            "to": 20000
+          },
+          {
+            "from": 20000
+          }
+        ]
+      }
+    }
+  }
+}
+'
